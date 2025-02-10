@@ -1,0 +1,22 @@
+version: '3'
+services:
+  psql:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: nome_do_banco
+      POSTGRES_USER: usuario_postgres
+      POSTGRES_PASSWORD: senha_postgres
+    ports:
+      - "5432:5432"
+  djangoapp:
+    build: .
+    environment:
+      POSTGRES_DB: nome_do_banco
+      POSTGRES_USER: usuario_postgres
+      POSTGRES_PASSWORD: senha_postgres
+      POSTGRES_HOST: psql  # Nome do serviço no docker-compose.yml
+      POSTGRES_PORT: 5432
+    ports:
+      - "8000:8000"
+    depends_on:
+      - psql
